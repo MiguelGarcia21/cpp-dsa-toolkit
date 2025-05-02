@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 template <typename T>
 class Node {
@@ -14,5 +15,3 @@ public:
 
     Node(T data, Node* left = nullptr, Node* right = nullptr, Node* parent = nullptr);
 };
-
-#include "../src/Node.tpp"

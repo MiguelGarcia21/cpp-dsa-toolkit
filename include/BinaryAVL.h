@@ -22,5 +22,3 @@ public:
     void deleteNode(T data);
     void print() const;
 };
-
-#include "../src/BinaryAVL.tpp"

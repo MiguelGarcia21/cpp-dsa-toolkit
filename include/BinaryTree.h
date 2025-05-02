@@ -20,5 +20,3 @@ public:
     void printDfs() const;
     void printBfs() const;
 };
-
-#include "../src/BinaryTree.tpp"

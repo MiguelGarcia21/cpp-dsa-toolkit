@@ -19,5 +19,3 @@ public:
     void deleteAt(int position);
     int find(T data) const;
 };
-
-#include "../src/LinkedList.tpp"

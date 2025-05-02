@@ -20,5 +20,3 @@ public:
     void printBackward() const;
     int find(T data) const;
 };
-
-#include "../src/DoublyLinkedList.tpp"
