@@ -1,11 +1,10 @@
 #pragma once
 #include "common.h"
-#include "Node.h"  // Use the central Node definition
 
 template <typename T>
 class BinaryTree {
 private:
-    Node<T>* root;  // Use the central Node class
+    Node<T>* root;
 
     void dfs(Node<T>* node) const;
     void bfs(Node<T>* node) const;
@@ -22,4 +21,4 @@ public:
     void printBfs() const;
 };
 
-#include "../src/BinaryTree.tpp"  // Include the template implementation
+#include "../src/BinaryTree.tpp"

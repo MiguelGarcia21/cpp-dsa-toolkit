@@ -4,7 +4,7 @@
 template <typename T>
 class LinkedList {
 private:
-    Node<T>* head;  // Use the central Node class
+    Node<T>* head;
     Node<T>* tail;
     int listLength;
 
@@ -20,4 +20,4 @@ public:
     int find(T data) const;
 };
 
-#include "../src/LinkedList.tpp"  // Include the template implementation
+#include "../src/LinkedList.tpp"

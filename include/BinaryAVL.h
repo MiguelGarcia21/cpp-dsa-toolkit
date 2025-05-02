@@ -23,4 +23,4 @@ public:
     void print() const;
 };
 
-#include "../src/BinaryAVL.tpp"  // Include the template implementation
+#include "../src/BinaryAVL.tpp"

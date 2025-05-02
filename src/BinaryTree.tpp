@@ -1,15 +1,12 @@
 #pragma once
 #include "../include/BinaryTree.h"
 
-// Constructor
 template <typename T>
 BinaryTree<T>::BinaryTree() : root(nullptr) {}
 
-// Destructor
 template <typename T>
 BinaryTree<T>::~BinaryTree() {
-    // Add logic to delete all nodes if necessary
-    // for now, assuming that memory will be managed elsewhere.
+    // TODO logic to delete
 }
 
 template <typename T>
@@ -42,7 +39,7 @@ void BinaryTree<T>::insert(T data) {
 
 template <typename T>
 void BinaryTree<T>::deleteNode(T data) {
-    // Implement delete logic if needed
+    // TODO delete logic
 }
 
 template <typename T>

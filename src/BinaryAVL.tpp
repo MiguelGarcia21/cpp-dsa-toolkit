@@ -1,14 +1,12 @@
 #pragma once
 #include "../include/BinaryAVL.h"
 
-// Constructor
 template <typename T>
 AVLTree<T>::AVLTree() : root(nullptr) {}
 
-// Destructor
 template <typename T>
 AVLTree<T>::~AVLTree() {
-    // Add logic to delete all nodes
+    // TODO logic to delete all nodes
 }
 
 template <typename T>
