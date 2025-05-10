@@ -71,9 +71,8 @@ TEST_F(NodeTest, ExplicitConstructorCheck) {
     auto createNode = [](const Node<int>&) {};
     
     // This should fail to compile if uncommented (which is what we want)
-    // createNode(42);  // Should fail - constructor is explicit
+    // createNode(42);  // Should fail because constructor is explicit
     
-    // This is the correct explicit construction
     createNode(Node<int>(42));  // Should compile
 }
 
