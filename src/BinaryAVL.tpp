@@ -6,7 +6,16 @@ AVLTree<T>::AVLTree() : root(nullptr) {}
 
 template <typename T>
 AVLTree<T>::~AVLTree() {
-    // TODO logic to delete all nodes
+    clear(root);
+}
+
+template <typename T>
+void AVLTree<T>::clear(Node<T>* node) {
+    if (node) {
+        clear(node->left);
+        clear(node->right);
+        delete node;
+    }
 }
 
 template <typename T>

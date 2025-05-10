@@ -13,6 +13,7 @@ private:
     Node<T>* insert(Node<T>* node, T data);
     Node<T>* deleteNode(Node<T>* node, T data);
     void inorder(Node<T>* node) const;
+    void clear(Node<T>* node);
 
 public:
     AVLTree();
@@ -22,3 +23,5 @@ public:
     void deleteNode(T data);
     void print() const;
 };
+
+#include "../src/BinaryAVL.tpp" 
