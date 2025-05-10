@@ -31,16 +31,16 @@ TEST_F(BinaryTreeTest, DeleteLeafNode) {
 }
 
 TEST_F(BinaryTreeTest, DeleteNodeWithOneChild) {
-    tree.insert(35);  // Becomes left child of 40
+    tree.insert(35);
     tree.deleteNode(40);
     EXPECT_FALSE(tree.search(40));
     EXPECT_TRUE(tree.search(35));
 }
 
 TEST_F(BinaryTreeTest, DeleteNodeWithTwoChildren) {
-    tree.deleteNode(50);  // Root with two children
+    tree.deleteNode(50);
     EXPECT_FALSE(tree.search(50));
-    EXPECT_TRUE(tree.search(60));  // Successor should replace
+    EXPECT_TRUE(tree.search(60));
 }
 
 TEST_F(BinaryTreeTest, DFSTraversal) {

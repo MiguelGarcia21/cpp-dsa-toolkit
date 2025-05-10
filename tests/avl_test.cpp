@@ -16,7 +16,6 @@ protected:
 };
 
 TEST_F(AVLTest, InsertAndBalance) {
-    // Test that tree remains balanced
     avl.insert(15);
     avl.insert(5);
     EXPECT_NO_THROW(avl.print());
