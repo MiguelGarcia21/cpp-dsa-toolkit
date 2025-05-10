@@ -1,156 +1,204 @@
-# 📚 C++ DSA Toolkit
+# Templated C++ Data Structures Toolkit Library
 
-Welcome to the **C++ DSA Toolkit** — a personal repository dedicated to implementing and documenting fundamental data structures and algorithms in C++. This project serves as a learning tool and a reference for anyone interested in understanding and applying core computer science concepts using C++.
+This project is a modular and extensible **C++ template library** for classic data structures. Designed for performance and educational clarity, each data structure is implemented using generic programming principles with separate header (`.h`) and implementation (`.tpp`) files, and includes a dedicated Google Test suite.
 
----
-
-## 🧰 Features
-
-* **Templated Implementations**: Generic data structures using C++ templates for type flexibility.
-* **Clean and Readable Code**: Emphasis on writing clear, maintainable, and well-documented code.
-* **Educational Focus**: Designed to aid in learning and understanding the inner workings of data structures.
-* **Modular Design**: Each data structure is implemented in its own module for ease of use and testing.
-
----
-
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-cpp-dsa-compendium/
-├── include/
-│   ├── linked_list.hpp
-│   ├── stack.hpp
-│   ├── queue.hpp
-│   ├── priority_queue.hpp
-│   ├── hash_table.hpp
-│   └── binary_tree.hpp
-├── src/
-│   ├── main.cpp
-│   └── tests/
-│       ├── test_linked_list.cpp
-│       ├── test_stack.cpp
-│       └── ...
-├── .gitignore
-└── README.md
+include/        // Header files for each data structure
+src/            // Template implementations
+tests/          // Google Test unit tests
+bin/            // (suggested for compiled test binaries) 
+.vscode/        // (local for VS Code configurations and testing)
 ```
 
-* `include/`: Contains header files for each data structure.
-* `src/`: Contains source files and test cases.
-* `.gitignore`: Specifies files and directories to be ignored by Git.
-* `README.md`: This file.
+## ✅ Supported Data Structures
+
+| Data Structure         | Header File           | Implementation File     | Test File                   |
+| ---------------------- | --------------------- | ----------------------- | --------------------------- |
+| AVL Tree               | `BinaryAVL.h`         | `BinaryAVL.tpp`         | `avl_test.cpp`              |
+| Binary Search Tree     | `BinaryTree.h`        | `BinaryTree.tpp`        | `binarytree_test.cpp`       |
+| Heap (Min/Max)         | `Heap.h`              | `Heap.tpp`              | `heap_test.cpp`             |
+| Singly Linked List     | `LinkedList.h`        | `LinkedList.tpp`        | `linkedlist_test.cpp`       |
+| Doubly Linked List     | `DoublyLinkedList.h`  | `DoublyLinkedList.tpp`  | `doublylinkedlist_test.cpp` |
+| Hash Table (open addr) | `HashTable.h`         | `HashTable.tpp`         | `hashtable_test.cpp`        |
+| Hash Table (chained)   | `HashTable_Chained.h` | `HashTable_Chained.tpp` | `hashtablechain_test.cpp`   |
+| General Node           | `Node.h`              | `Node.tpp`              | `node_test.cpp`             |
 
 ---
 
-## 📦 Implemented Data Structures
+## 🧪 Google Test Coverage
 
-### 🔗 Linked Lists
+Each test file includes a suite of unit tests. Below is a summary of tested functionalities:
 
-* **Singly Linked List**: Basic operations like insertion, deletion, and traversal.
-* **Doubly Linked List**: Supports bidirectional traversal with previous and next pointers.
+### AVL Tree Tests
 
-### 📚 Stack
-
-* Implemented using arrays and linked lists.
-* Supports typical stack operations: push, pop, peek, and isEmpty.
-
-### 📬 Queue
-
-* Implemented using arrays and linked lists.
-* Supports enqueue, dequeue, peek, and isEmpty operations.
-
-### 🏗️ Priority Queue (Heap)
-
-* **Max Heap** and **Min Heap** implementations.
-* Supports insertion, deletion, and heapify operations.
-
-### 🗃️ Hash Table
-
-* **Open Addressing**: Uses linear probing for collision resolution.
-* **Chaining Method**: Uses linked lists to handle collisions.
-
-### 🌳 Binary Tree
-
-* Supports insertion, deletion, and traversal methods (in-order, pre-order, post-order).
-* Includes depth-first search (DFS) and breadth-first search (BFS) algorithms.
+| Test Name          | Description                           |
+| ------------------ | ------------------------------------- |
+| `InsertAndBalance` | Tests self-balancing insertions       |
+| `DeleteNode`       | Tests deletions and rebalancing       |
+| `RotationTest`     | Tests triggering left/right rotations |
 
 ---
 
-## 🚧 Work in Progress
+### Binary Search Tree Tests
 
-This repository is under active development. Planned additions include:
-
-* **Graph Algorithms**: Implementations of BFS, DFS, Dijkstra's algorithm, etc.
-* **Advanced Data Structures**: AVL trees, Red-Black trees, Tries, etc.
-* **Algorithm Implementations**: Sorting algorithms, search algorithms, etc.
-* **Unit Testing**: Comprehensive test cases for each data structure.
+| Test Name                      | Description                      |
+| ------------------------------ | -------------------------------- |
+| `InsertAndSearch`              | Validates insertion and search   |
+| `DeleteLeafNode`               | Deletion of leaf node            |
+| `DeleteNodeWithOneChild`       | Deletion when one child exists   |
+| `DeleteNodeWithTwoChildren`    | Replaces with in-order successor |
+| `DFSTraversal`, `BFSTraversal` | Verifies tree traversal orders   |
 
 ---
 
-## 🛠️ Getting Started
+### Heap Tests
 
-### Prerequisites
+| Test Name       | Description                      |
+| --------------- | -------------------------------- |
+| `InsertMaxHeap` | Tests max-heap insertions        |
+| `InsertMinHeap` | Tests min-heap insertions        |
+| `ExtractTop*`   | Tests extracting the top element |
+| `DeleteItem`    | Tests arbitrary deletion         |
+| `HeapifyWorks`  | Builds heap from a vector        |
 
-* A C++ compiler supporting C++11 or later.
-* CMake (optional, for building the project).
+---
 
-### Compilation
+### Linked List Tests
 
-To compile the project:
+| Test Name            | Description                  |
+| -------------------- | ---------------------------- |
+| `AddFront`, `AddEnd` | Insertion at front and end   |
+| `AddAt`              | Insert at arbitrary position |
+| `DeleteAt`           | Deletes at index             |
+| `Find`               | Searches for value           |
+
+---
+
+### Doubly Linked List Tests
+
+| Test Name      | Description                 |
+| -------------- | --------------------------- |
+| `Reverse`      | Reverses the list in-place  |
+| `PrintMethods` | Verifies output correctness |
+| `EdgeCases`    | Handles boundary conditions |
+
+---
+
+### Hash Table (Open Addressing) Tests
+
+| Test Name        | Description                          |
+| ---------------- | ------------------------------------ |
+| `InsertAndGet`   | Tests key-value insertion and lookup |
+| `OverwriteValue` | Replaces value of existing key       |
+| `ClearTable`     | Empties hash table                   |
+
+---
+
+### Hash Table (Chained) Tests
+
+| Test Name                  | Description                  |
+| -------------------------- | ---------------------------- |
+| `InsertAndSize`            | Adds multiple values per key |
+| `RemoveValue`, `RemoveKey` | Tests deletion logic         |
+| `PrintOutput`              | Checks console output format |
+
+---
+
+### Node Tests
+
+| Test Name                       | Description                          |
+| ------------------------------- | ------------------------------------ |
+| `Constructors`, `TreeStructure` | Validates node connectivity          |
+| `MoveSemantics`                 | Ensures move constructor correctness |
+
+---
+
+## ⏱ Time Complexity
+
+Below are per-operation time complexities for each structure:
+
+### AVL Tree
+
+| Operation       | Time Complexity |
+| --------------- | --------------- |
+| Insert          | O(log n)        |
+| Delete          | O(log n)        |
+| Search          | O(log n)        |
+| Print (Inorder) | O(n)            |
+
+---
+
+### Binary Search Tree (Unbalanced)
+
+| Operation  | Time Complexity |
+| ---------- | --------------- |
+| Insert     | O(n) worst-case |
+| Delete     | O(n) worst-case |
+| Search     | O(n) worst-case |
+| Traversals | O(n)            |
+
+---
+
+### Heap
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| Insert    | O(log n)        |
+| Delete    | O(log n)        |
+| Top       | O(1)            |
+| Heapify   | O(n)            |
+
+---
+
+### Singly & Doubly Linked List
+
+| Operation        | Time Complexity |
+| ---------------- | --------------- |
+| Add Front/End    | O(1)            |
+| Add At           | O(n)            |
+| Delete At        | O(n)            |
+| Find             | O(n)            |
+| Reverse (Doubly) | O(n)            |
+
+---
+
+### Hash Table (Open Addressing)
+
+| Operation | Average Case | Worst Case |
+| --------- | ------------ | ---------- |
+| Insert    | O(1)         | O(n)       |
+| Delete    | O(1)         | O(n)       |
+| Search    | O(1)         | O(n)       |
+
+---
+
+### Hash Table (Chained)
+
+| Operation | Average Case | Worst Case |
+| --------- | ------------ | ---------- |
+| Insert    | O(1)         | O(n)       |
+| Delete    | O(1)         | O(n)       |
+| Search    | O(1)         | O(n)       |
+
+---
+
+## 🔧 Build & Run Tests
+
+Make sure you have [GoogleTest](https://github.com/google/googletest) installed and the folder bin created.
 
 ```bash
-g++ -std=c++11 src/main.cpp -o dsa_compendium
+g++ -std=c++20 -Iinclude -Isrc -I<gtest_path> tests/avl_test.cpp -o bin/avl_test
+./bin/avl_test
 ```
 
-Or, if using CMake:
-
-```bash
-mkdir build
-cd build
-cmake ..
-make
-```
-
-### Running Tests
-
-Test cases are located in the `src/tests/` directory. Compile and run them individually to verify the correctness of each data structure.
+You can adapt the command for each test file as needed.
 
 ---
 
-## 🧪 Sample Usage
+## 👨‍💻 Author
 
-Here's how you might use the singly linked list implementation:
-
-```cpp
-#include "linked_list.hpp"
-
-int main() {
-    LinkedList<int> list;
-    list.insertAtHead(10);
-    list.insertAtTail(20);
-    list.insertAtHead(5);
-    list.printList(); // Output: 5 -> 10 -> 20
-    return 0;
-}
-```
+This project is built by Miguel Angel Garcia, Software Engineering student, aiming to learn and showcase core data structure implementations with best practices in C++ template design and testing.
 
 ---
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙌 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests to enhance the functionality or add new data structures.
-
----
-
-## 📫 Contact
-
-For any questions or suggestions, please open an issue on the repository or contact me directly.
-
----
-
-Feel free to customize this `README.md` to better fit your project's specifics or to add more detailed information about each data structure and its implementation.
