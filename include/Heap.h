@@ -1,5 +1,8 @@
 #pragma once
 #include "common.h"
+#include <vector>
+#include <stdexcept>
+#include <iostream>
 
 enum class HeapType {
     MAX,
@@ -9,27 +12,30 @@ enum class HeapType {
 template<typename T>
 class Heap {
 private:
-    std::vector<T> vect = { T() }; // 1-based indexing
+    std::vector<T> vect = { T() };
     HeapType type;
 
-    int parent(int i) const { return i >> 1; }
-    int left(int i) const { return i << 1; }
-    int right(int i) const { return (i << 1) + 1; }
+    int parent(int i) const { return i / 2; }
+    int left(int i) const { return i * 2; }
+    int right(int i) const { return i * 2 + 1; }
 
     bool compare(const T& a, const T& b) const;
 
 public:
-    Heap(HeapType t = HeapType::MAX);
+    explicit Heap(HeapType t = HeapType::MAX);
 
     int size() const;
     bool isEmpty() const;
-    T top() const;
+    const T& top() const;
 
     void insertItem(const T& value);
-    void shiftUp(int i);
     T extractTop();
-    void shiftDown(int i);
     void deleteItem(const T& val);
     void heapify(const std::vector<T>& data);
+
+    void shiftUp(int i);
+    void shiftDown(int i);
     void printHeap() const;
 };
+
+#include "../src/Heap.tpp"

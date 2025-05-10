@@ -2,82 +2,119 @@
 #include "../include/HashTable_Chained.h"
 
 template <typename K, typename V>
-bool HashTable_Chained<K, V>::isEmpty() const {
-    int sum = 0;
-    for (int i = 0; i < hashGroups; i++) {
-        sum += table[i].size();
-    }
-    return sum == 0;
+size_t HashTable_Chained<K, V>::hashFunction(const K& key) const {
+    return std::hash<K>{}(key) % DEFAULT_CAPACITY;
 }
 
 template <typename K, typename V>
-int HashTable_Chained<K, V>::hashFunction(const K& key) const {
-    std::hash<K> hasher;
-    return hasher(key) % hashGroups;
-}
+void HashTable_Chained<K, V>::insert(const K& key, const V& value) {
+    size_t hashValue = hashFunction(key);
+    auto& bucket = table[hashValue];
 
-template <typename K, typename V>
-void HashTable_Chained<K, V>::insertItem(const K& key, const V& value) {
-    int hashValue = hashFunction(key);
-    auto& cell = table[hashValue];
-
-    for (auto& pair : cell) {
+    for (auto& pair : bucket) {
         if (pair.first == key) {
             pair.second.push_back(value);
-            std::cout << "Value added to existing key\n";
+            itemCount++;
             return;
         }
     }
 
-    cell.emplace_back(key, std::list<V>{value});
-    std::cout << "New key with value inserted\n";
+    bucket.emplace_back(key, std::list<V>{value});
+    itemCount++;
 }
 
 template <typename K, typename V>
-void HashTable_Chained<K, V>::removeItem(const K& key, const V& value) {
-    int hashValue = hashFunction(key);
-    auto& cell = table[hashValue];
+bool HashTable_Chained<K, V>::remove(const K& key, const V& value) {
+    size_t hashValue = hashFunction(key);
+    auto& bucket = table[hashValue];
 
-    for (auto it = cell.begin(); it != cell.end(); ++it) {
+    for (auto it = bucket.begin(); it != bucket.end(); ++it) {
         if (it->first == key) {
-            auto& valList = it->second;
-            valList.remove(value);
-            if (valList.empty()) {
-                cell.erase(it);
-                std::cout << "Key and value removed (no more values left)\n";
-            } else {
-                std::cout << "Value removed from key\n";
+            auto& values = it->second;
+            auto valIt = std::find(values.begin(), values.end(), value);
+            
+            if (valIt != values.end()) {
+                values.erase(valIt);
+                itemCount--;
+                
+                if (values.empty()) {
+                    bucket.erase(it);
+                }
+                return true;
             }
-            return;
+            return false;
         }
     }
-
-    std::cout << "Key not found\n";
+    return false;
 }
 
 template <typename K, typename V>
-std::list<V> HashTable_Chained<K, V>::searchTable(const K& key) const {
-    int hashValue = hashFunction(key);
-    const auto& cell = table[hashValue];
+bool HashTable_Chained<K, V>::removeKey(const K& key) {
+    size_t hashValue = hashFunction(key);
+    auto& bucket = table[hashValue];
 
-    for (const auto& pair : cell) {
+    for (auto it = bucket.begin(); it != bucket.end(); ++it) {
+        if (it->first == key) {
+            itemCount -= it->second.size();
+            bucket.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+template <typename K, typename V>
+std::list<V> HashTable_Chained<K, V>::get(const K& key) const {
+    size_t hashValue = hashFunction(key);
+    const auto& bucket = table[hashValue];
+
+    for (const auto& pair : bucket) {
         if (pair.first == key) {
             return pair.second;
         }
     }
-
     return {};
 }
 
 template <typename K, typename V>
-void HashTable_Chained<K, V>::printTable() const {
-    for (int i = 0; i < hashGroups; ++i) {
-        for (const auto& pair : table[i]) {
-            std::cout << "Key: " << pair.first << " -> ";
-            for (const auto& val : pair.second) {
-                std::cout << val << ", ";
-            }
-            std::cout << "\n";
+bool HashTable_Chained<K, V>::contains(const K& key) const {
+    size_t hashValue = hashFunction(key);
+    const auto& bucket = table[hashValue];
+
+    for (const auto& pair : bucket) {
+        if (pair.first == key) {
+            return true;
         }
     }
+    return false;
+}
+
+template <typename K, typename V>
+void HashTable_Chained<K, V>::clear() {
+    for (size_t i = 0; i < DEFAULT_CAPACITY; ++i) {
+        table[i].clear();
+    }
+    itemCount = 0;
+}
+
+template <typename K, typename V>
+void HashTable_Chained<K, V>::print() const {
+    for (size_t i = 0; i < DEFAULT_CAPACITY; ++i) {
+        if (!table[i].empty()) {
+            std::cout << "Bucket " << i << ":\n";
+            for (const auto& pair : table[i]) {
+                std::cout << "  Key: " << pair.first << " -> [";
+                for (const auto& val : pair.second) {
+                    std::cout << val << ", ";
+                }
+                std::cout << "]\n";
+            }
+        }
+    }
+}
+
+template <typename K, typename V>
+void HashTable_Chained<K, V>::rehash(size_t newCapacity) {
+    // TODO
+    throw std::runtime_error("Rehash not implemented for fixed-size table");
 }

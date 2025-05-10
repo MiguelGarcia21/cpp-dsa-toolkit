@@ -1,7 +1,6 @@
 #pragma once
 #include "../include/Node.h"
 
-// Simple constructor
 template <typename T>
 Node<T>::Node(T data) : 
     data(data), 
@@ -11,7 +10,6 @@ Node<T>::Node(T data) :
     right(nullptr), 
     parent(nullptr) {}
 
-// Constructor with data and left child
 template <typename T>
 Node<T>::Node(T data, Node* left) : 
     data(data), 
@@ -24,7 +22,6 @@ Node<T>::Node(T data, Node* left) :
     if (left) left->parent = this;
 }
 
-// Constructor with data and two children
 template <typename T>
 Node<T>::Node(T data, Node* left, Node* right) : 
     data(data), 
@@ -38,7 +35,6 @@ Node<T>::Node(T data, Node* left, Node* right) :
     if (right) right->parent = this;
 }
 
-// Full constructor
 template <typename T>
 Node<T>::Node(T data, Node* left, Node* right, Node* parent) : 
     data(data), 

@@ -15,7 +15,7 @@ DoublyLinkedList<T>::~DoublyLinkedList() {
 }
 
 template <typename T>
-void DoublyLinkedList<T>::addFront(T data) {
+void DoublyLinkedList<T>::addFront(const T& data) {
     Node<T>* newNode = new Node<T>(data);
     if (!head) {
         head = tail = newNode;
@@ -28,7 +28,7 @@ void DoublyLinkedList<T>::addFront(T data) {
 }
 
 template <typename T>
-void DoublyLinkedList<T>::addEnd(T data) {
+void DoublyLinkedList<T>::addEnd(const T& data) {
     Node<T>* newNode = new Node<T>(data);
     if (!tail) {
         head = tail = newNode;
@@ -41,10 +41,9 @@ void DoublyLinkedList<T>::addEnd(T data) {
 }
 
 template <typename T>
-void DoublyLinkedList<T>::addAt(T data, int position) {
-    if (position < 0 || position > listLength) {
-        std::cout << "Invalid position\n";
-        return;
+void DoublyLinkedList<T>::addAt(const T& data, size_t position) {
+    if (position > listLength) {
+        throw std::out_of_range("Position out of range");
     }
 
     if (position == 0) {
@@ -58,26 +57,22 @@ void DoublyLinkedList<T>::addAt(T data, int position) {
     }
 
     Node<T>* current = head;
-    for (int i = 0; i < position - 1; ++i) {
+    for (size_t i = 0; i < position - 1; ++i) {
         current = current->next;
     }
 
     Node<T>* newNode = new Node<T>(data);
     newNode->next = current->next;
     newNode->prev = current;
-
-    if (current->next) {
-        current->next->prev = newNode;
-    }
+    current->next->prev = newNode;
     current->next = newNode;
     listLength++;
 }
 
 template <typename T>
-void DoublyLinkedList<T>::deleteAt(int position) {
-    if (position < 0 || position >= listLength) {
-        std::cout << "Invalid position\n";
-        return;
+void DoublyLinkedList<T>::deleteAt(size_t position) {
+    if (position >= listLength) {
+        throw std::out_of_range("Position out of range");
     }
 
     Node<T>* toDelete;
@@ -89,12 +84,16 @@ void DoublyLinkedList<T>::deleteAt(int position) {
         else tail = nullptr;
     } else {
         toDelete = head;
-        for (int i = 0; i < position; ++i)
+        for (size_t i = 0; i < position; ++i) {
             toDelete = toDelete->next;
+        }
 
         toDelete->prev->next = toDelete->next;
-        if (toDelete->next) toDelete->next->prev = toDelete->prev;
-        else tail = toDelete->prev;
+        if (toDelete->next) {
+            toDelete->next->prev = toDelete->prev;
+        } else {
+            tail = toDelete->prev;
+        }
     }
 
     delete toDelete;
@@ -102,27 +101,25 @@ void DoublyLinkedList<T>::deleteAt(int position) {
 }
 
 template <typename T>
-void DoublyLinkedList<T>::printForward() const {
+void DoublyLinkedList<T>::reverse() {
     Node<T>* current = head;
+    Node<T>* temp = nullptr;
+    tail = head;
+    
     while (current) {
-        std::cout << current->data << " <-> ";
-        current = current->next;
-    }
-    std::cout << "NULL\n";
-}
-
-template <typename T>
-void DoublyLinkedList<T>::printBackward() const {
-    Node<T>* current = tail;
-    while (current) {
-        std::cout << current->data << " <-> ";
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
         current = current->prev;
     }
-    std::cout << "NULL\n";
+    
+    if (temp) {
+        head = temp->prev;
+    }
 }
 
 template <typename T>
-int DoublyLinkedList<T>::find(T data) const {
+int DoublyLinkedList<T>::find(const T& data) const {
     Node<T>* current = head;
     int index = 0;
     while (current) {
@@ -133,4 +130,26 @@ int DoublyLinkedList<T>::find(T data) const {
         index++;
     }
     return -1;
+}
+
+template <typename T>
+void DoublyLinkedList<T>::printForward() const {
+    Node<T>* current = head;
+    while (current) {
+        std::cout << current->data;
+        if (current->next) std::cout << " <-> ";
+        current = current->next;
+    }
+    std::cout << " -> NULL\n";
+}
+
+template <typename T>
+void DoublyLinkedList<T>::printBackward() const {
+    Node<T>* current = tail;
+    while (current) {
+        std::cout << current->data;
+        if (current->prev) std::cout << " <-> ";
+        current = current->prev;
+    }
+    std::cout << " -> NULL\n";
 }

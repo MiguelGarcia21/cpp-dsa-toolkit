@@ -6,17 +6,24 @@ class DoublyLinkedList {
 private:
     Node<T>* head;
     Node<T>* tail;
-    int listLength;
+    size_t listLength;
 
 public:
     DoublyLinkedList();
     ~DoublyLinkedList();
 
-    void addFront(T data);
-    void addEnd(T data);
-    void addAt(T data, int position);
-    void deleteAt(int position);
+    void addFront(const T& data);
+    void addEnd(const T& data);
+    void addAt(const T& data, size_t position);
+    void deleteAt(size_t position);
+    
+    bool isEmpty() const { return listLength == 0; }
+    size_t length() const { return listLength; }
+    
+    int find(const T& data) const;
     void printForward() const;
     void printBackward() const;
-    int find(T data) const;
+    void reverse();
 };
+
+#include "../src/DoublyLinkedList.tpp" 

@@ -2,8 +2,12 @@
 #include <iostream>
 #include <list>
 #include <utility>
+#include <algorithm>
 #include <string>
 #include <vector>
+#include <queue>
 #include <sstream>
 #include <chrono>
 #include "Node.h"
+#include <functional>
+#include <stdexcept>

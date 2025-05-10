@@ -4,22 +4,28 @@
 template <typename KeyType, typename ValueType>
 class HashTable {
 private:
-    static const int hashGroups = 10;
-    std::list<Node<KeyType, ValueType>> table[hashGroups];
+    static const size_t DEFAULT_CAPACITY = 10;
+    std::list<std::pair<KeyType, ValueType>> table[DEFAULT_CAPACITY];
+    size_t itemCount = 0;
+
+    bool keyExists(size_t hashValue, const KeyType& key) const;
 
 public:
-    bool isEmpty() const;
-    int hashFunction(KeyType key) const;
-    void insertItem(KeyType key, ValueType value);
-    void removeItem(KeyType key);
-    ValueType searchTable(KeyType key) const;
-    void printTable() const;
+    HashTable() = default;
+    ~HashTable() = default;
+
+    bool isEmpty() const { return itemCount == 0; }
+    size_t size() const { return itemCount; }
+    size_t capacity() const { return DEFAULT_CAPACITY; }
+
+    size_t hashFunction(const KeyType& key) const;
+    void insert(const KeyType& key, const ValueType& value);
+    bool remove(const KeyType& key);
+    ValueType get(const KeyType& key) const;
+    bool contains(const KeyType& key) const;
+
+    void clear();
+    void print() const;
 };
 
-template <typename KeyType, typename ValueType>
-class Node {
-public:
-    KeyType key;
-    ValueType value;
-    Node(KeyType k, ValueType v) : key(k), value(v) {}
-};
+#include "../src/HashTable.tpp"

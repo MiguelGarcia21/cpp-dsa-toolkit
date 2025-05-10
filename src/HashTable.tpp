@@ -2,80 +2,86 @@
 #include "../include/HashTable.h"
 
 template <typename KeyType, typename ValueType>
-bool HashTable<KeyType, ValueType>::isEmpty() const {
-    int sum = 0;
-    for (int i = 0; i < hashGroups; i++) {
-        sum += table[i].size();
+bool HashTable<KeyType, ValueType>::keyExists(size_t hashValue, const KeyType& key) const {
+    const auto& bucket = table[hashValue];
+    for (const auto& pair : bucket) {
+        if (pair.first == key) {
+            return true;
+        }
     }
-    return sum == 0;
+    return false;
 }
 
 template <typename KeyType, typename ValueType>
-int HashTable<KeyType, ValueType>::hashFunction(KeyType key) const {
-    return key % hashGroups;
+size_t HashTable<KeyType, ValueType>::hashFunction(const KeyType& key) const {
+    return std::hash<KeyType>{}(key) % DEFAULT_CAPACITY;
 }
 
 template <typename KeyType, typename ValueType>
-void HashTable<KeyType, ValueType>::insertItem(KeyType key, ValueType value) {
-    int hashValue = hashFunction(key);
-    auto& cell = table[hashValue];
-    bool keyExist = false;
+void HashTable<KeyType, ValueType>::insert(const KeyType& key, const ValueType& value) {
+    size_t hashValue = hashFunction(key);
+    auto& bucket = table[hashValue];
 
-    for (auto it = begin(cell); it != end(cell); it++) {
-        if(it->key == key) {
-            keyExist = true;
-            it->value = value;
-            std::cout << "Value replaced" << std::endl;
-            break;
+    for (auto& pair : bucket) {
+        if (pair.first == key) {
+            pair.second = value;
+            return;
         }
     }
 
-    if (!keyExist) {
-        cell.emplace_back(key, value);
-        std::cout << "Value inserted" << std::endl;
-    }
+    bucket.emplace_back(key, value);
+    itemCount++;
 }
 
 template <typename KeyType, typename ValueType>
-void HashTable<KeyType, ValueType>::removeItem(KeyType key) {
-    int hashValue = hashFunction(key);
-    auto& cell = table[hashValue];
-    bool keyExist = false;
+bool HashTable<KeyType, ValueType>::remove(const KeyType& key) {
+    size_t hashValue = hashFunction(key);
+    auto& bucket = table[hashValue];
 
-    for (auto it = begin(cell); it != end(cell); it++) {
-        if (it->key == key) {
-            keyExist = true;
-            it = cell.erase(it);
-            std::cout << "Value deleted" << std::endl;
-            break;
+    for (auto it = bucket.begin(); it != bucket.end(); ++it) {
+        if (it->first == key) {
+            bucket.erase(it);
+            itemCount--;
+            return true;
         }
     }
-
-    if (!keyExist) {
-        std::cout << "Key not found" << std::endl;
-    }
+    return false;
 }
 
 template <typename KeyType, typename ValueType>
-void HashTable<KeyType, ValueType>::printTable() const {
-    for (int i = 0; i < hashGroups; i++) {
-        if (table[i].size() == 0) continue;
-        for (auto it = table[i].begin(); it != table[i].end(); it++) {
-            std::cout << "Key: " << it->key << " Value: " << it->value << std::endl;
+ValueType HashTable<KeyType, ValueType>::get(const KeyType& key) const {
+    size_t hashValue = hashFunction(key);
+    const auto& bucket = table[hashValue];
+
+    for (const auto& pair : bucket) {
+        if (pair.first == key) {
+            return pair.second;
         }
     }
+    throw std::out_of_range("Key not found");
 }
 
 template <typename KeyType, typename ValueType>
-ValueType HashTable<KeyType, ValueType>::searchTable(KeyType key) const {
-    int hashValue = hashFunction(key);
-    const auto& cell = table[hashValue];
+bool HashTable<KeyType, ValueType>::contains(const KeyType& key) const {
+    return keyExists(hashFunction(key), key);
+}
 
-    for (const auto& pair : cell) {
-        if (pair.key == key) {
-            return pair.value;
+template <typename KeyType, typename ValueType>
+void HashTable<KeyType, ValueType>::clear() {
+    for (size_t i = 0; i < DEFAULT_CAPACITY; ++i) {
+        table[i].clear();
+    }
+    itemCount = 0;
+}
+
+template <typename KeyType, typename ValueType>
+void HashTable<KeyType, ValueType>::print() const {
+    for (size_t i = 0; i < DEFAULT_CAPACITY; ++i) {
+        if (!table[i].empty()) {
+            std::cout << "Bucket " << i << ":\n";
+            for (const auto& pair : table[i]) {
+                std::cout << "  Key: " << pair.first << " -> Value: " << pair.second << "\n";
+            }
         }
     }
-
-    return "Not found";
 }

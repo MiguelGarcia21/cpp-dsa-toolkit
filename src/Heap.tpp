@@ -6,7 +6,7 @@ Heap<T>::Heap(HeapType t) : type(t) {}
 
 template<typename T>
 int Heap<T>::size() const {
-    return vect.size() - 1;
+    return static_cast<int>(vect.size()) - 1;
 }
 
 template<typename T>
@@ -15,7 +15,7 @@ bool Heap<T>::isEmpty() const {
 }
 
 template<typename T>
-T Heap<T>::top() const {
+const T& Heap<T>::top() const {
     if (isEmpty()) throw std::out_of_range("Heap is empty!");
     return vect[1];
 }
@@ -33,10 +33,9 @@ void Heap<T>::insertItem(const T& val) {
 
 template<typename T>
 void Heap<T>::shiftUp(int i) {
-    if (i == 1) return;
-    if (compare(vect[i], vect[parent(i)])) {
+    while (i > 1 && compare(vect[i], vect[parent(i)])) {
         std::swap(vect[i], vect[parent(i)]);
-        shiftUp(parent(i));
+        i = parent(i);
     }
 }
 
@@ -61,36 +60,39 @@ T Heap<T>::extractTop() {
     if (isEmpty()) throw std::out_of_range("Heap is empty!");
 
     T topVal = vect[1];
-    std::swap(vect[1], vect.back());
+    vect[1] = vect.back();
     vect.pop_back();
-    shiftDown(1);
+    if (!isEmpty()) shiftDown(1);
     return topVal;
 }
 
 template<typename T>
 void Heap<T>::deleteItem(const T& val) {
     int index = -1;
-    for (int i = 1; i < vect.size(); ++i) {
+    for (int i = 1; i <= size(); ++i) {
         if (vect[i] == val) {
             index = i;
             break;
         }
     }
+
     if (index == -1) {
-        std::cout << "Value not found in heap.\n";
+        std::cerr << "Value not found in heap.\n";
         return;
     }
 
-    std::swap(vect[index], vect.back());
+    vect[index] = vect.back();
     vect.pop_back();
 
-    shiftDown(index);
-    shiftUp(index);
+    if (index <= size()) {
+        shiftDown(index);
+        shiftUp(index);
+    }
 }
 
 template<typename T>
 void Heap<T>::heapify(const std::vector<T>& data) {
-    vect = { T() }; // Reset with 1-based indexing
+    vect = { T() }; // Reset with dummy element for 1-based indexing
     vect.insert(vect.end(), data.begin(), data.end());
 
     for (int i = size() / 2; i >= 1; --i)
@@ -100,7 +102,7 @@ void Heap<T>::heapify(const std::vector<T>& data) {
 template<typename T>
 void Heap<T>::printHeap() const {
     std::cout << "Heap: ";
-    for (int i = 1; i < vect.size(); ++i)
+    for (int i = 1; i <= size(); ++i)
         std::cout << vect[i] << " ";
     std::cout << '\n';
 }

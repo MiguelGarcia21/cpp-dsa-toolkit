@@ -15,7 +15,12 @@ public:
     void addFront(T data);
     void addEnd(T data);
     void addAt(T data, int position);
-    void printList() const;
     void deleteAt(int position);
     int find(T data) const;
+    void printList() const;
+
+    int length() const { return listLength; }
+    bool isEmpty() const { return listLength == 0; }
 };
+
+#include "../src/LinkedList.tpp"

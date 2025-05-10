@@ -7,7 +7,7 @@ LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr), listLength(0) {}
 template <typename T>
 LinkedList<T>::~LinkedList() {
     Node<T>* current = head;
-    while(current != nullptr) {
+    while (current) {
         Node<T>* next = current->next;
         delete current;
         current = next;
@@ -17,19 +17,16 @@ LinkedList<T>::~LinkedList() {
 template <typename T>
 void LinkedList<T>::addFront(T data) {
     Node<T>* newNode = new Node<T>(data);
-    if(!head) {
-        head = tail = newNode;
-    } else {
-        newNode->next = head;
-        head = newNode;
-    }
+    newNode->next = head;
+    head = newNode;
+    if (!tail) tail = newNode;
     listLength++;
 }
 
 template <typename T>
 void LinkedList<T>::addEnd(T data) {
     Node<T>* newNode = new Node<T>(data);
-    if(!tail) {
+    if (!tail) {
         head = tail = newNode;
     } else {
         tail->next = newNode;
@@ -40,16 +37,15 @@ void LinkedList<T>::addEnd(T data) {
 
 template <typename T>
 void LinkedList<T>::addAt(T data, int position) {
-    if(position < 0 || position > listLength) {
-        std::cout << "Invalid Position\n";
-        return;
+    if (position < 0 || position > listLength) {
+        throw std::out_of_range("Invalid Position");
     }
 
-    if(position == 0) {
+    if (position == 0) {
         addFront(data);
         return;
     }
-    if(position == listLength) {
+    if (position == listLength) {
         addEnd(data);
         return;
     }
@@ -66,42 +62,24 @@ void LinkedList<T>::addAt(T data, int position) {
 }
 
 template <typename T>
-void LinkedList<T>::printList() const {
-    Node<T>* current = head;
-
-    while(current) {
-        std::cout << current->data << " -> ";
-        current = current->next;
-    }
-    std::cout << "Null\n";
-}
-
-template <typename T>
 void LinkedList<T>::deleteAt(int position) {
-    if(position < 0 || position >= listLength) {
-        std::cout << "Invalid Position\n";
-        return;
+    if (position < 0 || position >= listLength) {
+        throw std::out_of_range("Invalid Position");
     }
 
     Node<T>* temp;
-    if(position == 0) {
+    if (position == 0) {
         temp = head;
         head = head->next;
-        if(!head) {
-            tail = nullptr;
-        }
+        if (!head) tail = nullptr;
     } else {
         Node<T>* prev = head;
-
         for (int i = 0; i < position - 1; ++i) {
             prev = prev->next;
         }
-
         temp = prev->next;
         prev->next = temp->next;
-        if(!prev->next) {
-            tail = prev;
-        }
+        if (!prev->next) tail = prev;
     }
 
     delete temp;
@@ -113,12 +91,20 @@ int LinkedList<T>::find(T data) const {
     Node<T>* current = head;
     int index = 0;
 
-    while(current) {
-        if(current->data == data) {
-            return index;
-        }
+    while (current) {
+        if (current->data == data) return index;
         current = current->next;
         index++;
     }
     return -1;
+}
+
+template <typename T>
+void LinkedList<T>::printList() const {
+    Node<T>* current = head;
+    while (current) {
+        std::cout << current->data << " -> ";
+        current = current->next;
+    }
+    std::cout << "Null\n";
 }
